@@ -30,6 +30,7 @@ public class MessageReader implements CommandLineRunner {
 
     ExecutorService executorService = Executors.newSingleThreadExecutor();
 
+    // 需要将这个对象交给 Spring 容器管理，不定义成员变量这个异步函数会接收数据
     private EventHubConsumerAsyncClient eventHubConsumerAsyncClient;
 
     private static final String EH_COMPATIBLE_CONNECTION_STRING_FORMAT = "Endpoint=%s/;EntityPath=%s;SharedAccessKeyName=%s;SharedAccessKey=%s";
@@ -54,22 +55,8 @@ public class MessageReader implements CommandLineRunner {
             map.put(config.getIotHubName(), eventHubConsumerAsyncClient);
 
         } catch (Exception ex) {
-            log.error("init error");
+            log.error("[Azure iotHub] build async client error.");
         }
-//        System.in.read();
-
-//        Thread.sleep(Duration.ofDays(365).toMillis());
-//        try {
-//            // Sleep the application so it does not end. This is because the .subscribe() is a non-blocking
-//            // call. While the thread is sleeping, the subscription will run in the background, processing
-//            // messages.
-//            Thread.sleep(applicationDuration.toMillis());
-//        } catch (InterruptedException e) {
-//            log.error("[Azure iotHub] unable to sleep, iot hub name: {}", config.getIotHubName());
-//        } finally {
-//            log.info("===close");
-//            stop(config.getIotHubName());
-//        }
     }
 
     public void stop(String iotHubName) {
@@ -83,11 +70,11 @@ public class MessageReader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         AzureIotHubConfig config = new AzureIotHubConfig();
-        config.setEventHubsCompatibleEndpoint("sb://ihsumcprodsh2res016dednamespace.servicebus.chinacloudapi.cn");
-        config.setEventHubsCompatiblePath("iothub-ehub-hardwareio-1175946-1d54e943ff");
-        config.setIotHubSasKey("mgE5IPNgPmWepD7TtZFdwdDiBiHBtuw/FSGf+KQ85Fs=");
-        config.setIotHubSasKeyName("iothubowner");
-        config.setIotHubName("HardwareIotHubTest");
+//        config.setEventHubsCompatibleEndpoint("sb://ihsumcprodsh2res016dednamespace.servicebus.chinacloudapi.cn");
+//        config.setEventHubsCompatiblePath("iothub-ehub-hardwareio-1175946-1d54e943ff");
+//        config.setIotHubSasKey("mgE5IPNgPmWepD7TtZFdwdDiBiHBtuw/FSGf+KQ85Fs=");
+//        config.setIotHubSasKeyName("iothubowner");
+//        config.setIotHubName("HardwareIotHubTest");
         start(config);
     }
 

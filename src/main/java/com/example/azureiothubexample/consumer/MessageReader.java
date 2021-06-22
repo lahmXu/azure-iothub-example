@@ -53,7 +53,6 @@ public class MessageReader implements CommandLineRunner {
         try {
             EventHubConsumerAsyncClient eventHubConsumerAsyncClient = eventHubClientBuilder.buildAsyncConsumerClient();
             receiveFromAllPartitions(eventHubConsumerAsyncClient, config);
-
         } catch (Exception ex) {
             log.error("[Azure iotHub] build async client error.");
         }

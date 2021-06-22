@@ -70,11 +70,13 @@ public class MessageReader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         AzureIotHubConfig config = new AzureIotHubConfig();
-//        config.setEventHubsCompatibleEndpoint("sb://ihsumcprodsh2res016dednamespace.servicebus.chinacloudapi.cn");
-//        config.setEventHubsCompatiblePath("iothub-ehub-hardwareio-1175946-1d54e943ff");
-//        config.setIotHubSasKey("mgE5IPNgPmWepD7TtZFdwdDiBiHBtuw/FSGf+KQ85Fs=");
-//        config.setIotHubSasKeyName("iothubowner");
-//        config.setIotHubName("HardwareIotHubTest");
+
+        // 手动设置参数
+        config.setEventHubsCompatibleEndpoint("");
+        config.setEventHubsCompatiblePath("");
+        config.setIotHubSasKey("");
+        config.setIotHubSasKeyName("");
+        config.setIotHubName("");
         start(config);
     }
 

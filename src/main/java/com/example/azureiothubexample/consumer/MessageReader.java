@@ -28,14 +28,32 @@ import java.util.concurrent.Executors;
 @Order(value = 2)
 public class MessageReader implements CommandLineRunner {
 
-    ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-    // 需要将这个对象交给 Spring 容器管理，不定义成员变量这个异步函数会接收数据
+    // 需要将这个对象交给 Spring 容器管理，不定义成员变量这个异步函数会停止接收数据
     private EventHubConsumerAsyncClient eventHubConsumerAsyncClient;
 
     private static final String EH_COMPATIBLE_CONNECTION_STRING_FORMAT = "Endpoint=%s/;EntityPath=%s;SharedAccessKeyName=%s;SharedAccessKey=%s";
 
     private static final Map<String, EventHubConsumerAsyncClient> map = new ConcurrentHashMap<>();
+
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    /**
+     * CommandLineRunner 启动后执行
+     * @param args
+     * @throws Exception
+     */
+    @Override
+    public void run(String... args) throws Exception {
+        AzureIotHubConfig config = new AzureIotHubConfig();
+
+        // 手动设置参数
+        config.setEventHubsCompatibleEndpoint("");
+        config.setEventHubsCompatiblePath("");
+        config.setIotHubSasKey("");
+        config.setIotHubSasKeyName("");
+        config.setIotHubName("");
+        start(config);
+    }
 
     public void start(AzureIotHubConfig config) throws Exception {
 
@@ -65,19 +83,6 @@ public class MessageReader implements CommandLineRunner {
             eventHubConsumerAsyncClient.close();
             map.remove(iotHubName);
         }
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        AzureIotHubConfig config = new AzureIotHubConfig();
-
-        // 手动设置参数
-        config.setEventHubsCompatibleEndpoint("");
-        config.setEventHubsCompatiblePath("");
-        config.setIotHubSasKey("");
-        config.setIotHubSasKeyName("");
-        config.setIotHubName("");
-        start(config);
     }
 
     private void receiveFromAllPartitions(EventHubConsumerAsyncClient eventHubConsumerAsyncClient, AzureIotHubConfig config) {
